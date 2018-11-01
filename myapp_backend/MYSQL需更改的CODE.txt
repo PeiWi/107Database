@@ -1,0 +1,7 @@
+[手動回復ID為1]
+ALTER TABLE product AUTO_INCREMENT = 1;
+
+
+[設定ID為固定且自動累加]
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;

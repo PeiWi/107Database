@@ -39,8 +39,25 @@ router.get('/edit', function(req, res, next) {
 })
 
 router.post('/edit', function(req, res, next) {
+    var db = req.con;
+    var id = req.body.id;
 
-});
+        var sql= {
+            
+            name: req.body.name,
+            price: req.body.price
+        };
+
+        var qur = db.query('UPDATE product set ? where id =?', [sql, id], function(err, rows){
+           if (err) {
+               console.log(err);
+           }
+
+           res.setHeader('Content-Type', 'application/json');
+           res.redirect('/products');
+        });
+})
+
 
 router.get('/delete', function(req, res, next) {
     var db = req.con;
@@ -53,12 +70,35 @@ router.get('/delete', function(req, res, next) {
         data = rows;
         console.log(data);
 
-        res.render('/products', {
-            title: 'Product List',
-            data: data
-        });
+        res.redirect('/products');
     });
 
 })
 
+router.get('/add', function(req, res, next) {
+
+        res.render('productAdd' , {
+            title: 'Add Product',
+            msg: ''
+        });
+})
+
+router.post('/add', function(req, res, next) {
+    var db = req.con;
+
+        var sql= {
+            id: req.body.id,
+            name: req.body.name,
+            price: req.body.price
+        };
+
+        var qur = db.query('INSERT INTO product set ?', sql, function(err, rows){
+           if (err) {
+               console.log(err);
+           }
+
+           res.setHeader('Content-Type', 'application/json');
+           res.redirect('/products');
+        });
+})
 module.exports = router;
